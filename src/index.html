@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <title>Home Money</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 62.5%;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+
+    .header {
+      box-shadow: -1px 2px 4px 1px rgba(0, 0, 0, 0.75);
+      background-color: #1B2127;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 6rem;
+      flex-wrap: wrap;
+    }
+
+    .header-margin-left {
+      margin-left: 1rem;
+    }
+
+    .header-margin-right {
+      margin-right: 1rem;
+    }
+
+    .header>.opciones {
+      margin-left: 1rem;
+    }
+
+    .button-burger {
+      padding: 3px;
+      border: 1px solid white;
+      border-radius: 5px;
+      font-size: 25px;
+      cursor: pointer;
+    }
+
+    .main {
+      background-color: whitesmoke;
+      height: calc(100vh - 12rem);
+      padding: 2rem;
+      overflow-y: scroll;
+    }
+
+    .main>.create {
+      display: block;
+      border-radius: 1rem;
+      padding: 2rem;
+      background-color: white;
+      box-shadow: 0px 0px 9px -3px rgb(82 82 82);
+    }
+
+    .footer {
+      box-shadow: -1px 2px 4px 1px rgba(0, 0, 0, 0.75);
+      background-color: #1B2127;
+      color: white;
+      height: 6rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .create_title {
+      color: #1B2127;
+      font-size: 1.2rem;
+      font-weight: bold;
+      padding-bottom: 1rem;
+    }
+
+    .create_row {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .create .label {
+      color: #656060;
+      font-size: 1.2rem;
+      margin: 0.5rem;
+      width: 25%;
+      font-weight: bold;
+    }
+
+    .create .input {
+      margin: 0.5rem;
+      border-color: #656060;
+      border-style: solid;
+      border-radius: 6px;
+      padding: 5px;
+      font-weight: 600;
+      width: 75%;
+    }
+
+    .create_button {
+      background-color: #1B2127;
+      border-radius: 5px;
+      color: white;
+      border: none;
+      border-bottom: 5px solid #1B2127;
+      font-weight: 600;
+      width: 100%;
+      height: 3.5rem;
+      font-size: 2rem;
+    }
+  </style>
+
+</head>
+
+<body>
+  <header class="header">
+    <span class="button-burger header-margin-left">🍔</span>
+    <h1 class="title">Home Money 💵</h1>
+    <a href="<?= urlSps ?>" target="_blank" style="text-decoration:none;">
+      <span class="button-burger header-margin-right">🔍</span>
+    </a>
+  </header>
+
+  <section class="main">
+    <article class="create">
+      <form id="create_form">
+        <div class="create_title">
+          <h2>Nueva Cuenta</h2>
+        </div>
+
+        <div class="create_row">
+          <label for="uploadDateParam" class="label">Fecha: </label>
+          <input type="datetime-local" class="input" name="uploadDateParam" id="uploadDateParam">
+        </div>
+
+        <div class="create_row">
+          <label class="label" for="nameOfCount">Cuenta: </label>
+          <input class="input" type="text" name="nameOfCount" id="nameOfCount">
+        </div>
+
+        <div class="create_row">
+          <label class="label" for="category">Rubro: </label>
+          <select class="input" type="text" name="category" id="category">
+            <option selected value="">Seleccione una categoria</option>
+            <option value="CASA">CASA</option>
+            <option value="COMIDA">COMIDA</option>
+            <option value="ENTRETENIMIENTO">ENTRETENIMIENTO</option>
+            <option value="EXTRACCION">EXTRACCION</option>
+            <option value="IMPUESTOS">IMPUESTOS</option>
+            <option value="INGRESOS">INGRESOS</option>
+            <option value="OTROS">OTROS</option>
+            <option value="SALUD">SALUD</option>
+          </select>
+        </div>
+
+        <div class="create_row">
+          <label class="label" for="payment">Quien: </label>
+          <select class="input" type="text" name="payment" id="payment">
+            <option selected value="">Seleccione Quien </option>
+            <option value="MAMA">MAMA</option>
+            <option value="NICO">NICO</option>
+            <option value="MAR">MAR</option>
+          </select>
+        </div>
+
+        <div class="create_row">
+          <label for="typePayment" class="label">Tipo de Pago: </label>
+          <select class="input" name="typePayment" id="typePayment">
+            <option selected value="">Seleccione Tipo de Pago </option>
+            <option value="E">EFECTIVO</option>
+            <option value="T">TARJETA</option>
+          </select>
+        </div>
+
+        <div class="create_row">
+          <label for="amount" class="label">Cantidad: </label>
+          <input type="number" class="input" name="amount" id="amount" step=".01">
+        </div>
+
+        <div class="create_row">
+          <label for="sign" class="label">Signo: </label>
+          <select class="input" name="sign" id="sign">
+            <option selected value=""> Seleccione Signo </option>
+            <option value="P">ENTRADA</option>
+            <option value="N">SALIDA</option>
+          </select>
+        </div>
+
+        <button type="submit" class="create_button">
+          Cargar
+        </button>
+      </form>
+
+    </article>
+  </section>
+
+  <footer class="footer">
+    <h2>Made with ❤️ by Nico Mendoza 👨🏽‍💻</h2>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.6/dist/sweetalert2.all.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
+
+  <script>
+    const create_form = document.getElementById('create_form');
+    create_form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      let uploadDateParam = document.getElementById('uploadDateParam').value;
+      let nameOfCountParam = document.getElementById('nameOfCount').value;
+      let categoryParam = document.getElementById('category').value;
+      let paymentParam = document.getElementById('payment').value;
+      let typePaymentParam = document.getElementById('typePayment').value;
+      let amountParam = document.getElementById('amount').value;
+      let signParam = document.getElementById('sign').value;
+
+      // let date = new Date(uploadDateParam);
+
+      let url = "<?= url ?>" + "?action=create";
+
+      url += "&uploadDateParam=" + uploadDateParam;
+      url += "&nameOfCountParam=" + nameOfCountParam;
+      url += "&categoryParam=" + categoryParam;
+      url += "&paymentParam=" + paymentParam;
+      url += "&typePaymentParam=" + typePaymentParam;
+      url += "&amountParam=" + amountParam;
+      url += "&signParam=" + signParam;
+
+      console.log(url);
+
+      Swal.fire({
+        title: 'Deseas Cargar?',
+        showCancelButton: true,
+        confirmButtonText: 'Cargar',
+        cancelButtonText: 'Canselar',
+        confirmButtonColor: '#1B2127',
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+
+          Swal.fire({
+            title: 'Cargando Cuenta...',
+            willOpen () {
+              Swal.showLoading ()
+            },
+            didClose () {
+              Swal.hideLoading()
+            },
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false
+          })
+
+
+          fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+            if (data.result) {
+              Swal.close();
+              Swal.fire('Se cargo con exito!', 'Se Guardo correctamente Registro N° ' + data.id , 'success')
+            } else {
+              Swal.close();
+              Swal.fire('Ocurrio un Error', 'Espere a una actualizacion', 'info');
+            }
+
+            // Limpieza de parametros
+            document.getElementById('uploadDateParam').value = "";
+            document.getElementById('nameOfCount').value = "";
+            document.getElementById('category').value = "";
+            document.getElementById('payment').value = "";
+            document.getElementById('typePayment').value = "";
+            document.getElementById('amount').value = "";
+            document.getElementById('sign').value = "";
+
+
+          })
+         
+        }
+      })
+
+    })
+
+  </script>
+
+</body>
+
+</html>

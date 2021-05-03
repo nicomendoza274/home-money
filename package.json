@@ -1,0 +1,11 @@
+{
+  "name": "home-money",
+  "version": "2.0",
+  "description": "Proyecto con el fin de organizar la economia de mi casa",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "nicomendoza274",
+  "license": "MIT"
+}
