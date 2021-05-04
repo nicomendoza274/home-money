@@ -136,7 +136,7 @@
     <article class="create">
       <form id="create_form">
         <div class="create_title">
-          <h2>Nueva Cuenta</h2>
+          <h2>Nueva Transacción</h2>
         </div>
 
         <div class="create_row">
@@ -145,22 +145,18 @@
         </div>
 
         <div class="create_row">
-          <label class="label" for="nameOfCount">Cuenta: </label>
-          <input class="input" type="text" name="nameOfCount" id="nameOfCount">
-        </div>
-
-        <div class="create_row">
           <label class="label" for="category">Rubro: </label>
-          <select class="input" type="text" name="category" id="category">
+          <select class="input" type="text" name="category" id="category" onchange="changeCategory()">
             <option selected value="">Seleccione una categoria</option>
-            <option value="CASA">CASA</option>
-            <option value="COMIDA">COMIDA</option>
-            <option value="ENTRETENIMIENTO">ENTRETENIMIENTO</option>
-            <option value="EXTRACCION">EXTRACCION</option>
-            <option value="IMPUESTOS">IMPUESTOS</option>
-            <option value="INGRESOS">INGRESOS</option>
             <option value="OTROS">OTROS</option>
+            <option value="COMIDA">COMIDA</option>
+            <option value="IMPUESTOS">IMPUESTOS</option>
+            <option value="ENTRETENIMIENTO">ENTRETENIMIENTO</option>
+            <option value="CASA">CASA</option>
             <option value="SALUD">SALUD</option>
+            <option value="INGRESOS">INGRESOS</option>
+            <option value="EXTRACCION">EXTRACCION</option>
+            <option value="DEPOSITO">DEPOSITO</option>
           </select>
         </div>
 
@@ -175,17 +171,23 @@
         </div>
 
         <div class="create_row">
+          <label for="amount" class="label">Cantidad ($): </label>
+          <input type="number" class="input" name="amount" id="amount" step=".01">
+        </div>
+
+        <div class="create_row">
+          <label class="label" for="nameOfCount">Cuenta: </label>
+          <input class="input" type="text" name="nameOfCount" id="nameOfCount">
+        </div>
+
+
+        <div class="create_row">
           <label for="typePayment" class="label">Tipo de Pago: </label>
           <select class="input" name="typePayment" id="typePayment">
             <option selected value="">Seleccione Tipo de Pago </option>
             <option value="E">EFECTIVO</option>
             <option value="T">TARJETA</option>
           </select>
-        </div>
-
-        <div class="create_row">
-          <label for="amount" class="label">Cantidad: </label>
-          <input type="number" class="input" name="amount" id="amount" step=".01">
         </div>
 
         <div class="create_row">
@@ -213,6 +215,23 @@
   <script src="//cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
 
   <script>
+
+    function changeCategory() {
+      let category = document.querySelector("#category").value;
+      if (["EXTRACCION", "DEPOSITO"].includes(category)) {
+        document.getElementById('sign').disabled = true;
+        document.getElementById('typePayment').disabled = true;
+        document.getElementById('nameOfCount').value = category
+        document.getElementById('nameOfCount').disabled = true;
+
+      } else {
+        document.getElementById('sign').disabled = false;
+        document.getElementById('typePayment').disabled = false;
+        document.getElementById('nameOfCount').disabled = false;
+        document.getElementById('nameOfCount').value = "";
+      }
+    }
+
     const create_form = document.getElementById('create_form');
     create_form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -252,10 +271,10 @@
 
           Swal.fire({
             title: 'Cargando Cuenta...',
-            willOpen () {
-              Swal.showLoading ()
+            willOpen() {
+              Swal.showLoading()
             },
-            didClose () {
+            didClose() {
               Swal.hideLoading()
             },
             showConfirmButton: false,
@@ -266,29 +285,34 @@
 
 
           fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            console.log(data);
-            if (data.result) {
-              Swal.close();
-              Swal.fire('Se cargo con exito!', 'Se Guardo correctamente Registro N° ' + data.id , 'success')
-            } else {
-              Swal.close();
-              Swal.fire('Ocurrio un Error', 'Espere a una actualizacion', 'info');
-            }
+            .then(response => response.json())
+            .then(data => {
+              console.log(data);
+              if (data.result) {
+                Swal.close();
+                Swal.fire('Se cargo con exito!', 'Se Guardo correctamente Registro N° ' + data.id, 'success')
+              } else {
+                Swal.close();
+                Swal.fire('Ocurrio un Error', 'Espere a una actualizacion', 'info');
+              }
 
-            // Limpieza de parametros
-            document.getElementById('uploadDateParam').value = "";
-            document.getElementById('nameOfCount').value = "";
-            document.getElementById('category').value = "";
-            document.getElementById('payment').value = "";
-            document.getElementById('typePayment').value = "";
-            document.getElementById('amount').value = "";
-            document.getElementById('sign').value = "";
+              // Limpieza de parametros
+              document.getElementById('uploadDateParam').value = "";
+              document.getElementById('category').value = "";
+              document.getElementById('payment').value = "";
+              document.getElementById('typePayment').value = "";
+              document.getElementById('amount').value = "";
+              document.getElementById('sign').value = "";
+
+              //Activate
+              document.getElementById('sign').disabled = false;
+              document.getElementById('typePayment').disabled = false;
+              document.getElementById('nameOfCount').disabled = false;
+              document.getElementById('nameOfCount').value = "";
 
 
-          })
-         
+            })
+
         }
       })
 

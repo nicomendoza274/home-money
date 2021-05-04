@@ -1,12 +1,12 @@
 function create(parameters) {
 
   // ============== En variables.gs ==================
-  var posTable = defVars(); 
+  var posTable = defVars();
   var sheetParameters = defSheet();
   // =================================================
 
   //selecciono todo el contenido de la hoja para leer
-  var dataContent =sheetParameters.dataContent;
+  var dataContent = sheetParameters.dataContent;
   var datasheet = sheetParameters.sheet;
   var sps = sheetParameters.sps;
 
@@ -22,14 +22,14 @@ function create(parameters) {
 
 }
 
-function getJsonCreate(posTable, dataSheet, dataContent, sps, parameters){
+function getJsonCreate(posTable, dataSheet, dataContent, sps, parameters) {
 
   // get the last written position of sheet 
-  var lastRowNum  = dataSheet.getLastRow();
+  var lastRowNum = dataSheet.getLastRow();
   // define de correct position 
   var correctPosition = 4;
   // the las row in the selection sheet
-  var lastRow = dataContent[lastRowNum-correctPosition];
+  var lastRow = dataContent[lastRowNum - correctPosition];
   // the last id of selection sheet
   var lastId = lastRow[posTable.idPos.num];
 
@@ -44,14 +44,14 @@ function getJsonCreate(posTable, dataSheet, dataContent, sps, parameters){
   var signPos = posTable.signPos.letter;
   // ================================================================
 
-  try{
+  try {
 
     //Insert row down
-    dataSheet.insertRowsAfter(lastRowNum, 1); 
+    dataSheet.insertRowsAfter(lastRowNum, 1);
     var newLastRow = lastRowNum + 1;
 
     // define de new last id
-    var newLastId = lastId +1;
+    var newLastId = lastId + 1;
     dataSheet
       .getRange(idPos + newLastRow)
       .setValue(
@@ -66,41 +66,59 @@ function getJsonCreate(posTable, dataSheet, dataContent, sps, parameters){
 
     Logger.log(parameters.uploadDateParam);
 
-    var date = parameters.uploadDateParam 
+    var date = parameters.uploadDateParam
       ? Utilities.formatDate(
-          new Date(parameters.uploadDateParam), 
-          sps.getSpreadsheetTimeZone(),
-          "dd/MM/yyyy HH:mm:ss") 
+        new Date(parameters.uploadDateParam),
+        sps.getSpreadsheetTimeZone(),
+        "dd/MM/yyyy HH:mm:ss")
       : today;
 
-    dataSheet.getRange(uploadDatePos + newLastRow).setValue(date);
+    // Set fields in table
 
-    dataSheet
-      .getRange(nameOfCountPos + newLastRow)
-      .setValue(parameters.nameOfCountParam);
 
     dataSheet
       .getRange(categoryPos + newLastRow)
       .setValue(parameters.categoryParam);
 
+    //if enter an extraction or deposit change values typePayment and sing for "-"
+    if (["EXTRACCION", "DEPOSITO"].includes(parameters.categoryParam)) {
+      dataSheet
+        .getRange(nameOfCountPos + newLastRow)
+        .setValue(parameters.categoryParam);
+
+      dataSheet
+        .getRange(typePaymentPos + newLastRow)
+        .setValue("-");
+
+      dataSheet
+        .getRange(signPos + newLastRow)
+        .setValue("-");
+    } else {
+      dataSheet
+        .getRange(nameOfCountPos + newLastRow)
+        .setValue(parameters.nameOfCountParam);
+
+      dataSheet
+        .getRange(typePaymentPos + newLastRow)
+        .setValue(parameters.typePaymentParam);
+
+      dataSheet
+        .getRange(signPos + newLastRow)
+        .setValue(parameters.signParam);
+    }
+
+    dataSheet.getRange(uploadDatePos + newLastRow).setValue(date);
+
     dataSheet
       .getRange(paymentPos + newLastRow)
       .setValue(parameters.paymentParam);
 
-    dataSheet
-      .getRange(typePaymentPos + newLastRow)
-      .setValue(parameters.typePaymentParam);
-
     var str_amountParam = parameters.amountParam;
-    str_amountParam = str_amountParam.toString().replace('.',',');
+    str_amountParam = str_amountParam.toString().replace('.', ',');
 
     dataSheet
       .getRange(amountPos + newLastRow)
       .setValue(str_amountParam);
-
-    dataSheet
-      .getRange(signPos + newLastRow)
-      .setValue(parameters.signParam);
 
     dataSheet
       .getRange(idPos + newLastRow + ":" + signPos + newLastRow)
@@ -117,7 +135,7 @@ function getJsonCreate(posTable, dataSheet, dataContent, sps, parameters){
     }
 
 
-  }catch(e){
+  } catch (e) {
     var request = {
       request: false,
       result: e.toString()
