@@ -1,6 +1,6 @@
 {
   "name": "home-money",
-  "version": "2.0",
+  "version": "2.1.3",
   "description": "Proyecto con el fin de organizar la economia de mi casa",
   "main": "index.js",
   "scripts": {

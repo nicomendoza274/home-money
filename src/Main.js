@@ -49,7 +49,7 @@ function doGet(e) {
       return tmp.evaluate()
         .setTitle('Home money')
         .setFaviconUrl("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/274/dollar-banknote_1f4b5.png")
-        .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+        .addMetaTag('viewport', 'width=device-width, initial-scale=1, maximum-scale=1');
 
   }
 
