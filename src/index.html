@@ -53,6 +53,9 @@
     }
 
     .main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       background-color: whitesmoke;
       height: calc(100vh - 12rem);
       padding: 2rem;
@@ -61,6 +64,7 @@
 
     .main>.create {
       display: block;
+      width: 90%;
       border-radius: 1rem;
       padding: 2rem;
       background-color: white;
@@ -121,6 +125,22 @@
       height: 3.5rem;
       font-size: 2rem;
     }
+
+    @media (max-width: 425px){
+      .main > .create {
+        width: 100%;
+      }
+    }
+
+    @media (min-width: 500px) {
+      body{
+        width: 500px;
+        margin: 0 auto;
+      }
+    }
+
+
+
   </style>
 
 </head>
@@ -210,7 +230,7 @@
   </section>
 
   <footer class="footer">
-    <h2>Made with ❤️ by Nico Mendoza 👨🏽‍💻</h2>
+    <h2>Made with ❤️ by Nico Mendoza 👨🏽‍💻 v2.1.4</h2>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.6/dist/sweetalert2.all.min.js"></script>
@@ -233,6 +253,27 @@
         document.getElementById('nameOfCount').value = "";
       }
     }
+
+    function getToday(){
+      const mydate = new Date();
+      let curr_date = mydate.getDate();
+      let curr_month = mydate.getMonth()+1;
+      let curr_year = mydate.getFullYear();
+      let curr_hours = mydate.getHours();
+      let curr_minutes = mydate.getMinutes();
+
+      curr_date = curr_date.toString().length == 2 ? curr_date.toString() : `0${curr_date.toString()}`;
+      curr_month = curr_month.toString().length == 2 ? curr_month.toString() : `0${curr_month.toString()}`;
+      curr_year = curr_year.toString();
+      curr_hours = curr_hours.toString().length == 2 ? curr_hours.toString() : `0${curr_hours.toString()}`;
+      curr_minutes = curr_minutes.toString().length == 2 ? curr_minutes.toString() : `0${curr_minutes.toString()}`;
+
+      const today = `${curr_year}-${curr_month}-${curr_date}T${curr_hours}:${curr_minutes}`;
+      
+      document.querySelector("#uploadDateParam").value = today
+    }
+
+    getToday();
 
     const create_form = document.getElementById('create_form');
     create_form.addEventListener("submit", (e) => {
@@ -264,7 +305,7 @@
         title: 'Deseas Cargar?',
         showCancelButton: true,
         confirmButtonText: 'Cargar',
-        cancelButtonText: 'Canselar',
+        cancelButtonText: 'Cancelar',
         confirmButtonColor: '#1B2127',
         cancelButtonColor: '#d33',
       }).then((result) => {
@@ -295,7 +336,7 @@
                 Swal.fire('Se cargo con exito!', 'Se Guardo correctamente Registro N° ' + data.id, 'success')
               } else {
                 Swal.close();
-                Swal.fire('Ocurrio un Error', 'Espere a una actualizacion', 'info');
+                Swal.fire('Ocurrio un Error', 'Espere a una actualización', 'info');
               }
 
               // Limpieza de parametros
@@ -312,7 +353,10 @@
               document.getElementById('nameOfCount').disabled = false;
               document.getElementById('nameOfCount').value = "";
 
-
+            })
+            .catch((error)=> {
+              Swal.close();
+              Swal.fire('Ocurrio un Error', 'Espere a una actualización', 'info');
             })
 
         }
