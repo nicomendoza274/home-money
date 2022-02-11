@@ -212,15 +212,6 @@
           </select>
         </div>
 
-        <div class="create_row">
-          <label for="sign" class="label">Signo: </label>
-          <select class="input" name="sign" id="sign">
-            <option selected value=""> Seleccione Signo </option>
-            <option value="P">ENTRADA</option>
-            <option value="N">SALIDA</option>
-          </select>
-        </div>
-
         <button type="submit" class="create_button">
           Cargar
         </button>
@@ -230,7 +221,7 @@
   </section>
 
   <footer class="footer">
-    <h2>Made with ❤️ by Nico Mendoza 👨🏽‍💻 v2.1.5</h2>
+    <h2>Made with ❤️ by Nico Mendoza 👨🏽‍💻 v2.2.0</h2>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.6/dist/sweetalert2.all.min.js"></script>
@@ -241,17 +232,16 @@
     function changeCategory() {
       let category = document.querySelector("#category").value;
       if (["EXTRACCION", "DEPOSITO"].includes(category)) {
-        document.getElementById('sign').disabled = true;
         document.getElementById('typePayment').disabled = true;
         document.getElementById('nameOfCount').value = category
         document.getElementById('nameOfCount').disabled = true;
 
       } else {
-        document.getElementById('sign').disabled = false;
         document.getElementById('typePayment').disabled = false;
         document.getElementById('nameOfCount').disabled = false;
         document.getElementById('nameOfCount').value = "";
       }
+
     }
 
     function getToday(){
@@ -270,10 +260,21 @@
 
       const today = `${curr_year}-${curr_month}-${curr_date}T${curr_hours}:${curr_minutes}`;
       
-      document.querySelector("#uploadDateParam").value = today
+      return today;
     }
 
-    getToday();
+    function setInitialValues(){
+      document.getElementById("uploadDateParam").value = getToday();
+      document.getElementById('typePayment').disabled = false;
+      document.getElementById('nameOfCount').disabled = false;
+      document.getElementById('nameOfCount').value = "";
+      document.getElementById('category').value = "OTROS";
+      document.getElementById('payment').value = "";
+      document.getElementById('typePayment').value = "";
+      document.getElementById('amount').value = "";
+    }
+
+    setInitialValues();
 
     const create_form = document.getElementById('create_form');
     create_form.addEventListener("submit", (e) => {
@@ -285,9 +286,8 @@
       let paymentParam = document.getElementById('payment').value;
       let typePaymentParam = document.getElementById('typePayment').value;
       let amountParam = document.getElementById('amount').value;
-      let signParam = document.getElementById('sign').value;
-
-      // let date = new Date(uploadDateParam);
+      let signParam = categoryParam == 'INGRESOS' ? 'P' :
+        ["EXTRACCION", "DEPOSITO"].includes(category) ? '' : 'N'
 
       let url = "<?= url ?>" + "?action=create";
 
@@ -298,8 +298,6 @@
       url += "&typePaymentParam=" + typePaymentParam;
       url += "&amountParam=" + amountParam;
       url += "&signParam=" + signParam;
-
-      console.log(url);
 
       Swal.fire({
         title: 'Deseas Cargar?',
@@ -330,7 +328,6 @@
           fetch(url)
             .then(response => response.json())
             .then(data => {
-              console.log(data);
               if (data.result) {
                 Swal.close();
                 Swal.fire('Se cargo con exito!', 'Se Guardo correctamente Registro N° ' + data.id, 'success')
@@ -339,20 +336,7 @@
                 Swal.fire('Ocurrio un Error', 'Espere a una actualización', 'info');
               }
 
-              // Limpieza de parametros
-              document.getElementById('uploadDateParam').value = "";
-              document.getElementById('category').value = "";
-              document.getElementById('payment').value = "";
-              document.getElementById('typePayment').value = "";
-              document.getElementById('amount').value = "";
-              document.getElementById('sign').value = "";
-
-              //Activate
-              document.getElementById('sign').disabled = false;
-              document.getElementById('typePayment').disabled = false;
-              document.getElementById('nameOfCount').disabled = false;
-              document.getElementById('nameOfCount').value = "";
-              getToday();
+              setInitialValues()
 
             })
             .catch((error)=> {
