@@ -230,7 +230,7 @@
   </section>
 
   <footer class="footer">
-    <h2>Made with ❤️ by Nico Mendoza 👨🏽‍💻 v2.1.4</h2>
+    <h2>Made with ❤️ by Nico Mendoza 👨🏽‍💻 v2.1.5</h2>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.6/dist/sweetalert2.all.min.js"></script>
@@ -352,6 +352,7 @@
               document.getElementById('typePayment').disabled = false;
               document.getElementById('nameOfCount').disabled = false;
               document.getElementById('nameOfCount').value = "";
+              getToday();
 
             })
             .catch((error)=> {
