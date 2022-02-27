@@ -33,8 +33,14 @@ function doGet(e) {
     case "update":
       var result = "Actualizo";
       break;
+
     case "delete":
       var result = "Elimino";
+      break;
+
+    case "change-month":
+      var month = e.parameters.month ? e.parameters.month.toString() : '' ;
+      var result = changeMonth(month);
       break;
 
     default:
