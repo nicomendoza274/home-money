@@ -55,6 +55,7 @@
     .main {
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
       align-items: center;
       background-color: whitesmoke;
       height: calc(100vh - 12rem);
@@ -62,7 +63,7 @@
       overflow-y: scroll;
     }
 
-    .main>.create {
+    .main>.card {
       display: block;
       width: 90%;
       border-radius: 1rem;
@@ -82,21 +83,21 @@
       flex-wrap: wrap;
     }
 
-    .create_title {
+    .card_title {
       color: #1B2127;
       font-size: 1.2rem;
       font-weight: bold;
       padding-bottom: 1rem;
     }
 
-    .create_row {
+    .card_row {
       display: flex;
       justify-content: start;
       align-items: center;
       margin-bottom: 1rem;
     }
 
-    .create .label {
+    .card .label {
       color: #656060;
       font-size: 1.2rem;
       margin: 0.5rem;
@@ -104,7 +105,7 @@
       font-weight: bold;
     }
 
-    .create .input {
+    .card .input {
       margin: 0.5rem;
       border-color: #656060;
       border-style: solid;
@@ -114,7 +115,7 @@
       width: 75%;
     }
 
-    .create_button {
+    .card_button {
       background-color: #1B2127;
       border-radius: 5px;
       color: white;
@@ -122,12 +123,12 @@
       border-bottom: 5px solid #1B2127;
       font-weight: 600;
       width: 100%;
-      height: 3.5rem;
+      height: 5rem;
       font-size: 2rem;
     }
 
     @media (max-width: 425px){
-      .main > .create {
+      .main > .card {
         width: 100%;
       }
     }
@@ -155,18 +156,23 @@
   </header>
 
   <section class="main">
-    <article class="create">
-      <form id="create_form">
-        <div class="create_title">
+    <article class="card">
+      <button class="card_button" onclick="changeMonth()">
+        📅 Cambiar mes
+      </button>
+    </article>
+    <article class="card">
+      <form id="card_form">
+        <div class="card_title">
           <h2>Nueva Transacción</h2>
         </div>
 
-        <div class="create_row">
+        <div class="card_row">
           <label for="uploadDateParam" class="label">Fecha: </label>
           <input type="datetime-local" class="input" name="uploadDateParam" id="uploadDateParam">
         </div>
 
-        <div class="create_row">
+        <div class="card_row">
           <label class="label" for="category">Rubro: </label>
           <select class="input" type="text" name="category" id="category" onchange="changeCategory()">
             <option selected value="">Seleccione una categoria</option>
@@ -182,7 +188,7 @@
           </select>
         </div>
 
-        <div class="create_row">
+        <div class="card_row">
           <label class="label" for="payment">Quien: </label>
           <select class="input" type="text" name="payment" id="payment">
             <option selected value="">Seleccione Quien </option>
@@ -192,18 +198,18 @@
           </select>
         </div>
 
-        <div class="create_row">
+        <div class="card_row">
           <label for="amount" class="label">Cantidad ($): </label>
           <input type="number" class="input" name="amount" id="amount" step=".01">
         </div>
 
-        <div class="create_row">
+        <div class="card_row">
           <label class="label" for="nameOfCount">Cuenta: </label>
           <input class="input" type="text" name="nameOfCount" id="nameOfCount">
         </div>
 
 
-        <div class="create_row">
+        <div class="card_row">
           <label for="typePayment" class="label">Tipo de Pago: </label>
           <select class="input" name="typePayment" id="typePayment">
             <option selected value="">Seleccione Tipo de Pago </option>
@@ -212,7 +218,7 @@
           </select>
         </div>
 
-        <button type="submit" class="create_button">
+        <button type="submit" class="card_button">
           Cargar
         </button>
       </form>
@@ -221,7 +227,7 @@
   </section>
 
   <footer class="footer">
-    <h2>Made with ❤️ by Nico Mendoza 👨🏽‍💻 v2.2.0</h2>
+    <h2>Made with ❤️ by Nico Mendoza 👨🏽‍💻 v2.3.0</h2>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.6/dist/sweetalert2.all.min.js"></script>
@@ -274,9 +280,72 @@
       document.getElementById('amount').value = "";
     }
 
+    function changeMonth(){
+      let url = "<?= url ?>" + "?action=change-month";
+      
+      Swal.fire({
+      title: 'Seleccione el mes a cambiar',
+      input: 'select',
+      inputOptions: {
+        'ENERO' : 'ENERO',
+        'FEBRERO' : 'FEBRERO',
+        'MARZO' : 'MARZO',
+        'ABRIL' : 'ABRIL',
+        'MAYO' : 'MAYO',
+        'JUNIO' : 'JUNIO',
+        'JULIO' : 'JULIO',
+        'AGOSTO' : 'AGOSTO',
+        'SEPTIEMBRE' : 'SEPTIEMBRE',
+        'OCTUBRE' : 'OCTUBRE',
+        'NOVIEMBRE' : 'NOVIEMBRE',
+        'DICIEMBRE' : 'DICIEMBRE'
+      },
+      inputPlaceholder: 'NUEVO MES',
+      showCancelButton: true,
+      inputValidator: function (value) {
+        return new Promise(function (resolve, reject) {
+          if (value !== '') {
+            resolve();
+          } else {
+            resolve('Necesitas Elegir un mes');
+          }
+        });
+      }
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        Swal.fire({
+            title: 'Cargando Cuenta...',
+            willOpen() {
+              Swal.showLoading()
+            },
+            didClose() {
+              Swal.hideLoading()
+            },
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false
+        })
+        url += '&month=' + result.value;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                let icon = data.code === "error" ? "info" : "success";
+                let title = data.code ==="error" ? "Error": "Accion Realizada" ;
+                Swal.close();
+                Swal.fire(title, data.result, icon);
+            })
+            .catch((error)=> {
+              Swal.close();
+              Swal.fire('Ocurrio un Error', 'Espere a una actualización', 'info');
+            })
+      }
+    });
+    }
+
     setInitialValues();
 
-    const create_form = document.getElementById('create_form');
+    const create_form = document.getElementById('card_form');
     create_form.addEventListener("submit", (e) => {
       e.preventDefault();
 
