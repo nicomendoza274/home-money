@@ -59,6 +59,14 @@ function changeMonth(month){
         }
     }
 
+    //Change month's name
+    var configSheet = editConfig();
+    sheetConfig = configSheet.sheet;
+
+    sheetConfig
+        .getRange(`C3`)
+        .setValue(month);
+
     return {
         code: 'success',
         result: 'Se realizo el cambio con exito'
