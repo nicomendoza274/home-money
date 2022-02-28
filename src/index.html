@@ -164,7 +164,7 @@
     <article class="card">
       <form id="card_form">
         <div class="card_title">
-          <h2>Nueva Transacción</h2>
+          <h2>Nueva Transacción (<?= month ?>)</h2>
         </div>
 
         <div class="card_row">
@@ -250,6 +250,14 @@
 
     }
 
+    function reLoad() {
+       google.script.run
+      .withSuccessHandler(function(url){
+        window.open(url,'_top');
+      })
+      .getScriptURL();
+    }
+
     function getToday(){
       const mydate = new Date();
       let curr_date = mydate.getDate();
@@ -333,7 +341,8 @@
                 let icon = data.code === "error" ? "info" : "success";
                 let title = data.code ==="error" ? "Error": "Accion Realizada" ;
                 Swal.close();
-                Swal.fire(title, data.result, icon);
+                Swal.fire(title, data.result, icon).then(() => reLoad());
+                
             })
             .catch((error)=> {
               Swal.close();

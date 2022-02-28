@@ -52,6 +52,7 @@ function doGet(e) {
 
       tmp.url = sheetConfigParams.url;
       tmp.urlSps = sheetConfigParams.urlSps;
+      tmp.month = sheetConfigParams.month;
       return tmp.evaluate()
         .setTitle('Home money')
         .setFaviconUrl("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/274/dollar-banknote_1f4b5.png")
@@ -63,3 +64,6 @@ function doGet(e) {
 
 }
 
+function getScriptURL() {
+  return ScriptApp.getService().getUrl();
+}
